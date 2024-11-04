@@ -18,5 +18,14 @@ def cadastro():
 def inicio():
   return render_template("inicio.html")
 
+@app.route('/promo')
+def promo():
+  return render_template("promo.html")
+
+@app.route('/soma/<int:n1>/<int:n2>')
+def soma(n1, n2):
+		resultado = n1 + n2
+		return str(resultado)
+
 if __name__ == '__main__':
     app.run()
