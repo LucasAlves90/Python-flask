@@ -1,35 +1,43 @@
-from flask import Flask, render_template
+#python -m venv venv
+#.\venv\Scripts\activate
+#pip install flask
+from flask import Flask, render_template, request
+
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template("index.html")
-    
 
-@app.route('/contatos')
+@app.route("/contato")
 def contato():
-  return render_template("contatos.html", tel="(87)94002-8922")
+    return render_template("contato.html", tel="(81) 988889898", nome="Joao")
 
-@app.route('/cadastro')
-def cadastro():
-  return render_template("cadastro.html")
+@app.route("/user/<nome>", defaults={"sobrenome": "Silva"})
+@app.route("/user/<nome>/<sobrenome>")
+def user(nome, sobrenome):
+    return f"Olá, {nome} {sobrenome}!"
 
-@app.route('/inicio')
-def inicio():
-  return render_template("inicio.html")
+# Calculadora para somar dois números passados por parâmetro
+@app.route("/soma/<int:num1>/<int:num2>")
+def soma(num1, num2):
+    return f"O resultado da soma é: {num1 + num2}"
 
-@app.route('/promo')
-def promo():
-  return render_template("promo.html")
+# Minha página pessoal
+@app.route("/sobre")
+def sobre():
+    return render_template("sobre.html")
 
-@app.route('/Sobre')
-def Sobre():
-  return render_template("Sobre.html")
+@app.route("/dados")
+def dados():
+    return render_template("dados.html")
 
-@app.route('/soma/<int:n1>/<int:n2>')
-def soma(n1, n2):
-		resultado = n1 + n2
-		return str(resultado)
+@app.route("/recebe_dados", methods=["POST"])
+def recebe_dados():
+    nome = request.form["nome"]
+    email = request.form["email"]
+    msg = request.form["mensagem"]
+    return f"Nome: {nome}, Email: {email}, Mensagem: {msg}"
 
 if __name__ == '__main__':
     app.run()
